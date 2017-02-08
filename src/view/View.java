@@ -1,5 +1,6 @@
 package view;
 
+import controller.Authentication;
 import controller.Controller;
 import view.createemployee.CreateEmployeeDialog;
 import javax.swing.*;
@@ -14,6 +15,12 @@ import model.Employee;
 
 public class View extends JFrame implements ActionListener {
 
+  private JPanel pnMain = null;
+  private JPanel pnLogin = new JPanel(new FlowLayout(0));
+  private JTextField tfUsername = new JTextField();
+  private JPasswordField tfPassword = new JPasswordField();
+  private JButton btLogin = new JButton("Log in");
+  private JButton btLogout = new JButton("Log out");
   private JTable tEmployees = new JTable();
   private JScrollPane spTable = new JScrollPane(tEmployees);
   private JPanel pnUp = new JPanel(new GridLayout(1, 2));
@@ -34,15 +41,38 @@ public class View extends JFrame implements ActionListener {
     super("Data of the employees");
     setSize(800, 400);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    
+    pnMain = (JPanel)getContentPane();
+    JPanel pnUsername = new JPanel();
+    tfUsername.setColumns(25);
+    pnUsername.add(new JLabel("Username:  "));
+    pnUsername.add(tfUsername);
+    pnLogin.add(pnUsername);
+    
+    JPanel pnPassword = new JPanel();
+    tfPassword.setColumns(25);
+    pnPassword.add(new JLabel("Password:  "));
+    pnPassword.add(tfPassword);
+    pnLogin.add(pnPassword);
+    pnLogin.add(btLogin);
+    
+    JFrame frame = this;
+    btLogin.addActionListener((e) -> performLogin());
+
+    btLogout.addActionListener((e) -> performLogout());
+    
+    setContentPane(pnLogin);
+    
     lMessage.setFont(new Font("Ariel", Font.BOLD, 16));
     lMessage.setForeground(Color.GREEN);
     lMessage.setHorizontalTextPosition(SwingConstants.RIGHT);
     pnUp.add(pnLeft);
     pnLeft.add(btRegister);
+    pnLeft.add(btLogout);
     pnUp.add(lMessage);
     pnUp.setSize(590, 50);
-    add(pnUp, BorderLayout.PAGE_START);
-    add(spTable);
+    pnMain.add(pnUp, BorderLayout.PAGE_START);
+    pnMain.add(spTable);
     centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
     tEmployees.addMouseListener(new JTableButtonMouseListener(tEmployees));
     tEmployees.setAutoCreateRowSorter(true);
@@ -55,6 +85,36 @@ public class View extends JFrame implements ActionListener {
     lookAndFeel();
     setResizable(false);
     setLocationRelativeTo(this);
+  }
+  
+  private void performLogout() {
+    this.setContentPane(pnLogin);
+    this.revalidate();
+    this.repaint();
+  }
+  
+  private void performLogin() {
+    String userName = tfUsername.getText();
+    Authentication auth = new Authentication();
+    if (auth.login(userName, String.valueOf(tfPassword.getPassword()))) {
+      tfUsername.setText("");
+      tfPassword.setText("");
+      this.setContentPane(pnMain);
+      this.revalidate();
+      this.repaint();
+      
+      if (!auth.hasPermission(userName, "create_employee")) {
+        btRegister.setEnabled(false);
+      }
+      if (!auth.hasPermission(userName, "salary_change")) {
+        EmployeeTableModel etm = (EmployeeTableModel)tEmployees.getModel();
+        etm.disableButtons();
+      }
+      
+    } else {
+      JOptionPane.showMessageDialog(this, "Wrong username or password", "Authentication Error", JOptionPane.ERROR_MESSAGE);
+    }
+
   }
 
   public void showDialog(Employee employee, int buttonIndex) {

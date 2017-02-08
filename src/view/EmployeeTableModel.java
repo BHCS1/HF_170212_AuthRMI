@@ -20,13 +20,17 @@ public class EmployeeTableModel implements TableModel {
         }
     }
 
-    public Employee getRow(int rowIndex) {
-        return data.get(rowIndex);
-    }
-
     private String[] columnNames={
             "Department Name", "Employee name", "Salary - $", "Change"
     };
+
+    public void disableButtons() {
+      buttons.stream().forEach((bt) -> bt.setEnabled(false));
+    }
+    
+    public Employee getRow(int rowIndex) {
+        return data.get(rowIndex);
+    }
 
     @Override
     public int getRowCount() {
