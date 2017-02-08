@@ -10,7 +10,8 @@ public class ServerController {
           
   public static void main(String[] args) {
     try {
-      AuthInterface serverAuth=(AuthInterface)UnicastRemoteObject.exportObject(new Authentication(),0);
+      Authentication authentication = new Authentication();
+      AuthInterface serverAuth=(AuthInterface)UnicastRemoteObject.exportObject(authentication,0);
       Registry r=LocateRegistry.getRegistry();
       r.bind("authentication", serverAuth);
     }
