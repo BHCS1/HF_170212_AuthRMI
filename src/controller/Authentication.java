@@ -3,8 +3,6 @@ package controller;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import server.authentication.AuthInterface;
 
 public class Authentication {

@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public abstract class Model implements DBInterface {
+public abstract class Model implements DBInterface, Serializable {
 
   protected static Connection connection = null;
 

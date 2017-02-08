@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableCellRenderer;
 import model.Employee;
@@ -123,7 +124,7 @@ public class View extends JFrame implements ActionListener {
       DataSheet ds = new DataSheet(this, employee);
       ds.setVisible(true);
       if (actualSalary != employee.getSalary()) {
-        if (!employee.update()) {
+        if (!Controller.getServer().update(employee)) {
           employee.setSalary(actualSalary);
           JOptionPane.showMessageDialog(this, "Update of the salary was not successful, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
           return;
@@ -141,6 +142,9 @@ public class View extends JFrame implements ActionListener {
       employee.setSalary(actualSalary);
       JOptionPane.showMessageDialog(this, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
       System.out.println(e.getMessage());
+    } catch (RemoteException ex) {
+      JOptionPane.showMessageDialog(null, "Remote connection failed!", "Error", JOptionPane.ERROR_MESSAGE);
+      System.out.println(ex.getMessage());
     }
   }
 
@@ -162,7 +166,7 @@ public class View extends JFrame implements ActionListener {
     ced.setVisible(true);
     if (employee.getID() > 0) {
       try {
-        EmployeeTableModel etm = new EmployeeTableModel(Employee.getAll(), Controller.getAl());
+        EmployeeTableModel etm = new EmployeeTableModel(Controller.getServer().getAllEmployees(), Controller.getAl());
         Controller.setEtm(etm);
         setEmployees(etm);
         spTable.revalidate();
@@ -203,6 +207,9 @@ public class View extends JFrame implements ActionListener {
         System.out.println(ex.getMessage());
       } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
+        System.out.println(ex.getMessage());
+      } catch (RemoteException ex) {
+        JOptionPane.showMessageDialog(null, "Remote connection failed!", "Error", JOptionPane.ERROR_MESSAGE);
         System.out.println(ex.getMessage());
       }
     }

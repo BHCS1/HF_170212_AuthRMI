@@ -1,11 +1,13 @@
 
 package view.createemployee.steps;
 
+import controller.Controller;
 import java.awt.FlowLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -51,7 +53,7 @@ public class ThirdStepPanel extends StepPanel {
       DefaultComboBoxModel cbm=(DefaultComboBoxModel)cbManagers.getModel();
       cbm.removeAllElements();
       
-      manList = choosedDepartment.getManagers(); // new ArrayList<>();
+      manList = Controller.getServer().getManagers(choosedDepartment); // new ArrayList<>();
       if (manList.size()==0)
         cbm.addElement("Steven King");
              
@@ -59,7 +61,7 @@ public class ThirdStepPanel extends StepPanel {
         cbm.addElement(manager);
       }
 
-    } catch (ClassNotFoundException|SQLException ex) {
+    } catch (ClassNotFoundException | SQLException | RemoteException ex) {
       System.out.println("Hiba: "+ex.getMessage());
     }
   }
@@ -89,9 +91,9 @@ public class ThirdStepPanel extends StepPanel {
   
   void datas(){
     try {
-      depList=Department.getAll();
-      jobList=Job.getAll();
-      manList=Employee.getAll();
+      depList=Controller.getServer().getAllDepartments();
+      jobList=Controller.getServer().getAllJobs();
+      manList=Controller.getServer().getAllEmployees();
       
       int jobListSize=jobList.size();
       jobsList = new String [jobListSize];
@@ -115,16 +117,15 @@ public class ThirdStepPanel extends StepPanel {
     } catch (ClassNotFoundException ex) {
         JOptionPane.showMessageDialog(null, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
         System.out.println(ex.getMessage());
-        System.exit(0);
-    } catch (SQLException ex) {;
-
+    } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
         System.out.println(ex.getMessage());
-        System.exit(0);
+      } catch (RemoteException ex) {
+        JOptionPane.showMessageDialog(null, "Remote connection failed!", "Error", JOptionPane.ERROR_MESSAGE);
+        System.out.println(ex.getMessage());
       }
     
 
-      ;
     }
 
   @Override
