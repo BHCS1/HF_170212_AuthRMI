@@ -1,13 +1,13 @@
 package view.createemployee;
 
+import controller.Controller;
 import view.createemployee.steps.StepPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import model.Employee;
 import view.createemployee.steps.FifthStepPanel;
@@ -21,6 +21,7 @@ public class CreateEmployeeDialog extends JDialog {
   private ArrayList<StepPanel> stepPanels=new ArrayList<>();
   
   private Employee employee=null;
+  private int returnVal=-1;
 
   public CreateEmployeeDialog(Frame owner, Employee employee) {
     super(owner, true);
@@ -115,18 +116,23 @@ public class CreateEmployeeDialog extends JDialog {
         btnFinish.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
-            int returnVal=-1;
+            
             try {
               java.util.Date utilDate = new java.util.Date();
               java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
               employee.setHireDate(sqlDate);
-              returnVal=employee.save();
+              returnVal=Controller.getServer().save(employee);
+              System.out.println(returnVal);
+              System.out.println(employee.getID());
             } catch (SQLException ex) {
               System.out.println(ex.getMessage());
               JOptionPane.showMessageDialog(null, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (ClassNotFoundException ex) {
               System.out.println(ex.getMessage());
               JOptionPane.showMessageDialog(null, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (RemoteException ex) {
+              JOptionPane.showMessageDialog(null, "Remote connection failed!", "Error", JOptionPane.ERROR_MESSAGE);
+              System.out.println(ex.getMessage());
             }
             
             if(returnVal>0)
@@ -141,6 +147,10 @@ public class CreateEmployeeDialog extends JDialog {
     }
     // set the focus to the first panel
     tb.getComponent(0).setFocusable(true);
+  }
+  
+  public int getReturnVal() {
+    return returnVal;
   }
   
   public void closeDialog() {

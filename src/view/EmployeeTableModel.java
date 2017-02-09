@@ -28,6 +28,10 @@ public class EmployeeTableModel implements TableModel {
       buttons.stream().forEach((bt) -> bt.setEnabled(false));
     }
     
+    public void enableButtons() {
+      buttons.stream().forEach((bt) -> bt.setEnabled(true));
+    }
+    
     public Employee getRow(int rowIndex) {
         return data.get(rowIndex);
     }
