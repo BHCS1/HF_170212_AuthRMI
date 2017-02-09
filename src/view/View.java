@@ -89,6 +89,8 @@ public class View extends JFrame implements ActionListener {
   }
   
   private void performLogout() {
+    btRegister.setEnabled(true);
+    ((EmployeeTableModel)tEmployees.getModel()).enableButtons();
     this.setContentPane(pnLogin);
     this.revalidate();
     this.repaint();
@@ -164,7 +166,8 @@ public class View extends JFrame implements ActionListener {
     Employee employee = new Employee();
     CreateEmployeeDialog ced = new CreateEmployeeDialog(this, employee);
     ced.setVisible(true);
-    if (employee.getID() > 0) {
+    int employeeId = ced.getReturnVal();
+    if (employeeId > 0) {
       try {
         EmployeeTableModel etm = new EmployeeTableModel(Controller.getServer().getAllEmployees(), Controller.getAl());
         Controller.setEtm(etm);
@@ -172,7 +175,7 @@ public class View extends JFrame implements ActionListener {
         spTable.revalidate();
         spTable.repaint();
         int index = 0;
-        while (index < tEmployees.getRowCount() && etm.getRow(index).getID() != employee.getID())
+        while (index < tEmployees.getRowCount() && etm.getRow(index).getID() != employeeId)
           index++;
         if (index < tEmployees.getRowCount()) {
           tEmployees.setRowSelectionInterval(index, index);
