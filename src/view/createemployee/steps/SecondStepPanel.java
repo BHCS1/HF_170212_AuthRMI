@@ -1,11 +1,11 @@
  
 package view.createemployee.steps;
 
+import controller.Controller;
 import java.awt.FlowLayout;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFormattedTextField;
@@ -95,7 +95,7 @@ public class SecondStepPanel extends StepPanel {
     try {
       if (emailValidate(email)){
         i++;
-        if (!Employee.emailExists(email) ) {
+        if (!Controller.getServer().emailExists(email) ) {
           i++;
           employee.setEmail(email);
         }
@@ -114,6 +114,8 @@ public class SecondStepPanel extends StepPanel {
         JOptionPane.showMessageDialog(null, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
         System.out.println(ex.getMessage());
         System.exit(0);
+    } catch (RemoteException e) {
+      ;
     }
       
     if (phoneNumber!= null){
