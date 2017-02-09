@@ -22,6 +22,9 @@ public interface ModelInterface extends Remote {
   // department.getManagers()
   ArrayList<Employee> getManagers(Department department) throws RemoteException, ClassNotFoundException, SQLException;
   
+  // return {minSalary, maxSalary}
+  int[] salaryCalculate(Employee employee) throws RemoteException, ClassNotFoundException, SQLException;
+  
   // employee.update()
   boolean update(Employee employee) throws RemoteException, ClassNotFoundException, SQLException;
   

@@ -31,6 +31,11 @@ public class ModelManager implements ModelInterface {
   public ArrayList<Employee> getManagers(Department department) throws RemoteException, ClassNotFoundException, SQLException {
     return department.getManagers();
   }
+  
+  @Override
+  public int[] salaryCalculate(Employee employee) throws RemoteException, ClassNotFoundException, SQLException {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
 
   @Override
   public boolean update(Employee employee) throws RemoteException, ClassNotFoundException, SQLException {
