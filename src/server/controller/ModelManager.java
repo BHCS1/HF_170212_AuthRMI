@@ -58,16 +58,4 @@ public class ModelManager implements ModelInterface {
     return employee.save();
   }
   
-  public static void main(String[] args) {
-    try {
-      ModelManager modelManager=new ModelManager();
-      ModelInterface server=(ModelInterface)UnicastRemoteObject.exportObject(modelManager,0);
-      Registry r=LocateRegistry.getRegistry();
-      r.bind("modelinterface", server);
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-  
 }
