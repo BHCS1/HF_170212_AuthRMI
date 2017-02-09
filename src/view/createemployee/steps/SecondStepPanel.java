@@ -109,13 +109,12 @@ public class SecondStepPanel extends StepPanel {
     } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
         System.out.println(ex.getMessage());
-        System.exit(0);
     } catch (ClassNotFoundException ex) {
         JOptionPane.showMessageDialog(null, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
         System.out.println(ex.getMessage());
-        System.exit(0);
-    } catch (RemoteException e) {
-      ;
+    } catch (RemoteException ex) {
+        JOptionPane.showMessageDialog(null, "Remote connection failed!", "Error", JOptionPane.ERROR_MESSAGE);
+        System.out.println(ex.getMessage());
     }
       
     if (phoneNumber!= null){
