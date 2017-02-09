@@ -33,23 +33,18 @@ public class ModelManager implements ModelInterface {
   }
 
   @Override
-  public int[] salaryCalculate(Employee employee) throws RemoteException, ClassNotFoundException, SQLException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
-
-  @Override
   public boolean update(Employee employee) throws RemoteException, ClassNotFoundException, SQLException {
     return employee.update();
   }
 
   @Override
-  public String checking(Employee employee, int panelnumber) throws RemoteException, ClassNotFoundException, SQLException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean emailExists(String email) throws RemoteException, ClassNotFoundException, SQLException {
+    return Employee.emailExists(email);
   }
 
   @Override
-  public boolean save(Employee employee) throws RemoteException, ClassNotFoundException, SQLException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public int save(Employee employee) throws RemoteException, ClassNotFoundException, SQLException {
+    return employee.save();
   }
   
   public static void main(String[] args) {

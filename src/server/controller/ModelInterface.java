@@ -22,16 +22,12 @@ public interface ModelInterface extends Remote {
   // department.getManagers()
   ArrayList<Employee> getManagers(Department department) throws RemoteException, ClassNotFoundException, SQLException;
   
-  // return {minSalary, maxSalary}
-  int[] salaryCalculate(Employee employee) throws RemoteException, ClassNotFoundException, SQLException;
-  
   // employee.update()
   boolean update(Employee employee) throws RemoteException, ClassNotFoundException, SQLException;
   
-  // mondjuk ha üresen, vagy "VALID" jön vissza, akkor OK, egyébként pedig hibaüzenet, amit meg lehet jeleníteni JOptonPane-ben
-  String checking(Employee employee, int panelnumber) throws RemoteException, ClassNotFoundException, SQLException;
+  boolean emailExists(String email) throws RemoteException, ClassNotFoundException, SQLException;
   
   // employee.save()
-  boolean save(Employee employee) throws RemoteException, ClassNotFoundException, SQLException;
+  int save(Employee employee) throws RemoteException, ClassNotFoundException, SQLException;
   
 }
