@@ -1,10 +1,12 @@
 package view;
 
+import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import javax.swing.JButton;
@@ -31,7 +33,7 @@ public class DataSheet extends JDialog implements ActionListener {
   private int typedValue, salaryMin, salaryMax;
   private boolean salaryCheck;
   
-  public DataSheet(Frame owner, Employee employee) throws ClassNotFoundException, SQLException {
+  public DataSheet(Frame owner, Employee employee) throws ClassNotFoundException, SQLException, RemoteException {
     super(owner, employee.getName(), true);
     this.employee = employee;
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -80,15 +82,12 @@ public class DataSheet extends JDialog implements ActionListener {
     setLocationRelativeTo(owner);
   }
   
-  void salaryCalculate() throws SQLException, ClassNotFoundException{
-    int actualSalary=employee.getSalary();
-    int departmentMaxSalaryChange =(int)((employee.getDepartment().getSumSalary())*0.03);
-    int employeeMaxSalaryChange= (int) Math.round(actualSalary*0.05);
+  void salaryCalculate() throws SQLException, ClassNotFoundException, RemoteException{
     
-    salaryMin=actualSalary-(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
-    salaryMax=actualSalary+(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
+    int[] salaryMinMax = Controller.getServer().salaryCalculate(employee);
     
-
+    salaryMin = salaryMinMax[0];
+    salaryMax = salaryMinMax[1];
             
   }
   

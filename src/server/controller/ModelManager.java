@@ -34,7 +34,13 @@ public class ModelManager implements ModelInterface {
   
   @Override
   public int[] salaryCalculate(Employee employee) throws RemoteException, ClassNotFoundException, SQLException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    int actualSalary=employee.getSalary();
+    int departmentMaxSalaryChange =(int)((employee.getDepartment().getSumSalary())*0.03);
+    int employeeMaxSalaryChange= (int) Math.round(actualSalary*0.05);
+    
+    int salaryMin=actualSalary-(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
+    int salaryMax=actualSalary+(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
+    return new int[] {salaryMin, salaryMax};
   }
 
   @Override
