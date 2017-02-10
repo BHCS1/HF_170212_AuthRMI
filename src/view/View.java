@@ -164,7 +164,7 @@ public class View extends JFrame implements ActionListener {
     if (timerMessage.isRunning())
       timerMessage.stop();
     Employee employee = new Employee();
-    CreateEmployeeDialog ced = new CreateEmployeeDialog(this, employee);
+    CreateEmployeeDialog ced = new CreateEmployeeDialog(this);//, employee);
     ced.setVisible(true);
     int employeeId = ced.getReturnVal();
     if (employeeId > 0) {
