@@ -20,10 +20,10 @@ public class CreateEmployeeDialog extends JDialog {
   private JTabbedPane tb = new JTabbedPane();
   private ArrayList<StepPanel> stepPanels=new ArrayList<>();
   
-  private Employee employee=null;
+  private Employee employee=new Employee();//null;
   private int returnVal=-1;
 
-  public CreateEmployeeDialog(Frame owner, Employee employee) {
+  public CreateEmployeeDialog(Frame owner) {//, Employee employee) {
     super(owner, true);
     this.setTitle("Create new employee");
     this.setSize(500, 400);
