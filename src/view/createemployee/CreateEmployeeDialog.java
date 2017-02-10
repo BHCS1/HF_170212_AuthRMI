@@ -32,7 +32,7 @@ public class CreateEmployeeDialog extends JDialog {
     tb.setFocusable(false);
     tb.setEnabled(false);
     
-    this.employee=employee;
+    //this.employee=employee;
     buildTabbedPane();
   }
 
